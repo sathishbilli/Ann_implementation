@@ -3,7 +3,10 @@ from src.utills.common import read_config
 from src.utills.data_mang import get_data
 from src.utills.model import create_model, save_model
 import matplotlib.pyplot as plt
+from src.utills.tensorboard_implemen import call_back_fun,get_log_path
 import pandas as pd
+# import tensorflow as tf
+# import time
 
 
 
@@ -27,9 +30,14 @@ def training(config_path):
 
     # create callbacks
     #CALLBACK_LIST = get_callbacks(config, X_train)
+    log_d=get_log_path()
+    list=call_back_fun(log_d)
+
+    
+    
 
     histroy = model.fit(X_train, y_train, epochs=EPOCHS,
-                    validation_data=VALIDATION_SET)
+                    validation_data=VALIDATION_SET,callbacks=list)
     
 
     artifacts_dir = config["artifacts"]["artifacts_dir"]
