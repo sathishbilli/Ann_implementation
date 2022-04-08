@@ -2,6 +2,10 @@ import os
 from src.utills.common import read_config
 from src.utills.data_mang import get_data
 from src.utills.model import create_model, save_model
+import matplotlib.pyplot as plt
+import pandas as pd
+
+
 
 import argparse
 
@@ -24,8 +28,9 @@ def training(config_path):
     # create callbacks
     #CALLBACK_LIST = get_callbacks(config, X_train)
 
-    history = model.fit(X_train, y_train, epochs=EPOCHS,
+    histroy = model.fit(X_train, y_train, epochs=EPOCHS,
                     validation_data=VALIDATION_SET)
+    
 
     artifacts_dir = config["artifacts"]["artifacts_dir"]
     model_dir = config["artifacts"]["model_dir"]
@@ -34,8 +39,22 @@ def training(config_path):
     os.makedirs(model_dir_path, exist_ok=True)
     
     model_name = config["artifacts"]["model_name"]
+    
+    
 
     save_model(model, model_name, model_dir_path)
+    save_img(histroy,filename="plot.png", plot_dir="plots")
+
+def save_img(histroy,filename,plot_dir):
+    pd.DataFrame(histroy.history).plot(figsize=(10,7))
+    plt.grid(True)
+    plt.show()
+    os.makedirs(plot_dir, exist_ok=True)
+    plot_path = os.path.join(plot_dir, filename)
+    plt.savefig(plot_path)
+
+
+
 
 if __name__ == '__main__':
     args = argparse.ArgumentParser()
