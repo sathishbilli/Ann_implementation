@@ -29,7 +29,7 @@ def training(config_path):
     EPOCHS = config["params"]["epochs"]
     VALIDATION_SET = (X_valid, y_valid)
 
-    # create callbacks
+    # create callbacks function
     CALLBACK_LIST = get_callbacks(config, X_train)
     # log_d=get_log_path()
     # list=call_back_fun(log_d)
